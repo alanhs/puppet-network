@@ -38,6 +38,8 @@ define network::team (
   $teaming_opts = '{"runner":{"name":"activebackup"}}',
   $zone = undef,
   $restart = true,
+  $bootproto    => undef,
+
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -49,7 +51,7 @@ define network::team (
     netmask      => '',
     gateway      => '',
     macaddress   => '',
-    bootproto    => undef,
+    bootproto    => 'none',
     ipv6address  => '',
     ipv6gateway  => '',
     mtu          => $mtu,
