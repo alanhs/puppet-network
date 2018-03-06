@@ -49,6 +49,7 @@ define network::team::slave (
   $userctl = false,
   $bootproto = undef,
   $onboot = undef,
+  $teaming_opts = undef,
 ) {
   # Validate our data
   if $macaddress and ! is_mac_address($macaddress) {
