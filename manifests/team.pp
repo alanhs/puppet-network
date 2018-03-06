@@ -49,7 +49,7 @@ define network::team (
     netmask      => '',
     gateway      => '',
     macaddress   => '',
-    bootproto    => 'none',
+    bootproto    => undef,
     ipv6address  => '',
     ipv6gateway  => '',
     mtu          => $mtu,
