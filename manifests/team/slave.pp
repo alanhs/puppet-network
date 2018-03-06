@@ -1,6 +1,6 @@
-# == Definition: network::bond::slave
+# == Definition: network::team::slave
 #
-# Creates a bonded slave interface.
+# Creates a teamed slave interface.
 #
 # === Parameters:
 #
@@ -25,9 +25,9 @@
 #
 # === Sample Usage:
 #
-#   network::bond::slave { 'eth1':
+#   network::team::slave { 'eth1':
 #     macaddress => $::macaddress_eth1,
-#     master     => 'bond0',
+#     master     => 'team0',
 #   }
 #
 # === Authors:
@@ -38,7 +38,7 @@
 #
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
-define network::bond::slave (
+define network::team::slave (
   $master,
   $macaddress = undef,
   $ethtool_opts = undef,
@@ -68,7 +68,7 @@ define network::bond::slave (
     owner   => 'root',
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
-    content => template('network/ifcfg-bond.erb'),
+    content => template('network/ifcfg-team.erb'),
     before  => File["ifcfg-${master}"],
   }
 
@@ -77,4 +77,4 @@ define network::bond::slave (
       notify  => Service['network'],
     }
   }
-} # define network::bond::slave
+} # define network::team::slave

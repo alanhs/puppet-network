@@ -1,6 +1,6 @@
-# == Definition: network::bond::bridge
+# == Definition: network::team::bridge
 #
-# Creates a bonded, bridge interface and enables the bonding driver.
+# Creates a teamed, bridge interface and enables the teaming driver.
 #
 # === Parameters:
 #
@@ -8,17 +8,17 @@
 #   $bridge       - required
 #   $mtu          - optional
 #   $ethtool_opts - optional
-#   $bonding_opts - optional
+#   $teaming_opts - optional
 #   $restart      - optional - defaults to true
 #
 # === Actions:
 #
 # Deploys the file /etc/sysconfig/network-scripts/ifcfg-$name.
-# Updates /etc/modprobe.conf with bonding driver parameters.
+# Updates /etc/modprobe.conf with teaming driver parameters.
 #
 # === Sample Usage:
 #
-#   network::bond::bridge { 'bond2':
+#   network::team::bridge { 'team2':
 #     ensure => 'up',
 #     bridge => 'br0',
 #   }
@@ -33,12 +33,12 @@
 # Copyright (C) 2013 David Cote, unless otherwise noted.
 # Copyright (C) 2013 Mike Arnold, unless otherwise noted.
 #
-define network::bond::bridge (
+define network::team::bridge (
   $ensure,
   $bridge,
   $mtu = undef,
   $ethtool_opts = undef,
-  $bonding_opts = 'miimon=100',
+  $teaming_opts = 'miimon=100',
   $restart = true,
 ) {
   # Validate our regular expressions
@@ -56,12 +56,12 @@ define network::bond::bridge (
     ipv6gateway  => '',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
-    bonding_opts => $bonding_opts,
+    teaming_opts => $teaming_opts,
     bridge       => $bridge,
     restart      => $restart,
   }
 
-  # Only install "alias bondN bonding" on old OSs that support
+  # Only install "alias teamN teaming" on old OSs that support
   # /etc/modprobe.conf.
   case $::operatingsystem {
     /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
@@ -71,7 +71,7 @@ define network::bond::bridge (
             context => '/files/etc/modprobe.conf',
             changes => [
               "set alias[last()+1] ${title}",
-              'set alias[last()]/modulename bonding',
+              'set alias[last()]/modulename teaming',
             ],
             onlyif  => "match alias[*][. = '${title}'] size == 0",
             before  => Network_if_base[$title],
@@ -87,7 +87,7 @@ define network::bond::bridge (
             context => '/files/etc/modprobe.conf',
             changes => [
               "set alias[last()+1] ${title}",
-              'set alias[last()]/modulename bonding',
+              'set alias[last()]/modulename teaming',
             ],
             onlyif  => "match alias[*][. = '${title}'] size == 0",
             before  => Network_if_base[$title],
@@ -98,4 +98,4 @@ define network::bond::bridge (
     }
     default: {}
   }
-} # define network::bond::bridge
+} # define network::team::bridge

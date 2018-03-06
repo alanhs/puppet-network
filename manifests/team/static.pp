@@ -1,6 +1,6 @@
-# == Definition: network::bond::static
+# == Definition: network::team::static
 #
-# Creates a bonded interface with static IP address and enables the bonding
+# Creates a teamed interface with static IP address and enables the teaming
 # driver.
 #
 # === Parameters:
@@ -11,7 +11,7 @@
 #   $gateway      - optional
 #   $mtu          - optional
 #   $ethtool_opts - optional
-#   $bonding_opts - optional
+#   $teaming_opts - optional
 #   $zone         - optional
 #   $defroute     - optional
 #   $restart      - optional - defaults to true
@@ -21,15 +21,15 @@
 # === Actions:
 #
 # Deploys the file /etc/sysconfig/network-scripts/ifcfg-$name.
-# Updates /etc/modprobe.conf with bonding driver parameters.
+# Updates /etc/modprobe.conf with teaming driver parameters.
 #
 # === Sample Usage:
 #
-#   network::bond::static { 'bond0':
+#   network::team::static { 'team0':
 #     ensure       => 'up',
 #     ipaddress    => '1.2.3.5',
 #     netmask      => '255.255.255.0',
-#     bonding_opts => 'mode=active-backup miimon=100',
+#     teaming_opts => 'mode=active-backup miimon=100',
 #   }
 #
 # === Authors:
@@ -40,14 +40,14 @@
 #
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
-define network::bond::static (
+define network::team::static (
   $ensure,
   $ipaddress = undef,
   $netmask = undef,
   $gateway = undef,
   $mtu = undef,
   $ethtool_opts = undef,
-  $bonding_opts = 'miimon=100',
+  $teaming_opts = 'miimon=100',
   $peerdns = false,
   $ipv6init = false,
   $ipv6address = undef,
@@ -85,7 +85,7 @@ define network::bond::static (
     bootproto    => 'none',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
-    bonding_opts => $bonding_opts,
+    teaming_opts => $teaming_opts,
     peerdns      => $peerdns,
     ipv6init     => $ipv6init,
     ipv6address  => $ipv6address,
@@ -101,7 +101,7 @@ define network::bond::static (
     userctl      => $userctl,
   }
 
-  # Only install "alias bondN bonding" on old OSs that support
+  # Only install "alias teamN teaming" on old OSs that support
   # /etc/modprobe.conf.
   case $::operatingsystem {
     /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
@@ -111,7 +111,7 @@ define network::bond::static (
             context => '/files/etc/modprobe.conf',
             changes => [
               "set alias[last()+1] ${title}",
-              'set alias[last()]/modulename bonding',
+              'set alias[last()]/modulename teaming',
             ],
             onlyif  => "match alias[*][. = '${title}'] size == 0",
             before  => Network_if_base[$title],
@@ -127,7 +127,7 @@ define network::bond::static (
             context => '/files/etc/modprobe.conf',
             changes => [
               "set alias[last()+1] ${title}",
-              'set alias[last()]/modulename bonding',
+              'set alias[last()]/modulename teaming',
             ],
             onlyif  => "match alias[*][. = '${title}'] size == 0",
             before  => Network_if_base[$title],
@@ -138,4 +138,4 @@ define network::bond::static (
     }
     default: {}
   }
-} # define network::bond::static
+} # define network::team::static
