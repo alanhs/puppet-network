@@ -1,6 +1,6 @@
 ###
 ### File managed by Puppet
-### ifcfg-team.erb
+###
 DEVICE=<%= @interface %>
 <% if @macaddress and @macaddress != '' %>HWADDR=<%= @macaddress %>
 <% end -%>
@@ -20,5 +20,7 @@ TYPE=Ethernet
 <% if @onboot %>ONBOOT=<%= @onboot %>
 <% end -%>
 <% if @userctl %>USERCTL=yes
+<% end -%>
+<% if @teaming_opts %>TEAM_CONFIG="<%= @teaming_opts %>"
 <% end -%>
 NM_CONTROLLED=no
