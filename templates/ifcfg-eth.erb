@@ -1,6 +1,6 @@
 ###
 ### File managed by Puppet
-###
+### ifcfg-eth.erb
 DEVICE=<%= @interface %>
 BOOTPROTO=<%= @bootproto %>
 <% if @manage_hwaddr and @macaddress and @macaddress != '' -%>

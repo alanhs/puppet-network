@@ -1,6 +1,6 @@
 ###
 ### File managed by Puppet
-###
+### ifcfg-team.erb
 DEVICE=<%= @interface %>
 <% if @macaddress and @macaddress != '' %>HWADDR=<%= @macaddress %>
 <% end -%>
@@ -21,5 +21,4 @@ TYPE=Ethernet
 <% end -%>
 <% if @userctl %>USERCTL=yes
 <% end -%>
-TEAM_CONFIG='{"runner":{"name":"activebackup"}}'
 NM_CONTROLLED=no
