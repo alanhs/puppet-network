@@ -123,6 +123,7 @@ define network_if_base (
   $dhcp_hostname   = undef,
   $ethtool_opts    = undef,
   $bonding_opts    = undef,
+  $teaming_opts    = undef,
   $isalias         = false,
   $peerdns         = false,
   $ipv6peerdns     = false,

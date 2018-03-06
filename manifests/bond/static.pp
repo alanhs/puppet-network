@@ -86,7 +86,6 @@ define network::bond::static (
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,
-    teaming_opts => $teaming_opts,
     peerdns      => $peerdns,
     ipv6init     => $ipv6init,
     ipv6address  => $ipv6address,
