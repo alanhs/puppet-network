@@ -61,6 +61,7 @@ define network::team::static (
   $metric = undef,
   $restart = true,
   $userctl = undef,
+  $bridge = undef,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
