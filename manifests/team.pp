@@ -35,7 +35,7 @@ define network::team (
   $ensure,
   $mtu = undef,
   $ethtool_opts = undef,
-  $teaming_opts = 'miimon=100',
+  $teaming_opts = '{"runner":{"name":"activebackup"}}',
   $zone = undef,
   $restart = true,
 ) {
@@ -54,6 +54,7 @@ define network::team (
     ipv6gateway  => '',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
+    teaming_opts => $teaming_opts,
     zone         => $zone,
     restart      => $restart,
   }
